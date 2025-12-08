@@ -1,0 +1,379 @@
+{
+  "suites": [
+    {
+      "adoRunId": "ADO-10025",
+      "suiteName": "Payment Service",
+      "totalTestCases": 28,
+      "passed": 25,
+      "failed": 3,
+      "startTime": "2024-01-15T09:30:00.000Z",
+      "endTime": "2024-01-15T09:35:42.000Z",
+      "executionDuration": "5m 42s",
+      "version": "v2.4.1",
+      "testCases": [
+        {
+          "testCase": {
+            "idx": "1",
+            "testStepName": "Payment Service - POST Create Payment Test Case 1",
+            "method": "POST",
+            "webURL": "https://api.example.com/api/v1/payments/create",
+            "headerSheet": "HeadersSheet",
+            "bodyText": "{\n  \"userId\": 1001,\n  \"amount\": 149.99,\n  \"currency\": \"USD\",\n  \"paymentMethod\": \"credit_card\",\n  \"cardLast4\": \"4242\"\n}",
+            "validationSheet": "ValidationSheet",
+            "correlateSheet": "CorrelationSheet",
+            "negativeCase": "No",
+            "params": "version=v1&async=false",
+            "comments": "Test case for Payment Service - POST operation. Validates successful response.",
+            "input1": ""
+          },
+          "output": {
+            "outputJson": "{\n  \"success\": true,\n  \"statusCode\": 200,\n  \"message\": \"Operation completed successfully\",\n  \"data\": {\n    \"id\": \"PAYMENT-00010001\",\n    \"transactionId\": \"TXN-0000456789\",\n    \"amount\": 149.99,\n    \"currency\": \"USD\",\n    \"status\": \"completed\",\n    \"processingTime\": 1245,\n    \"provider\": \"Stripe\"\n  }\n}",
+            "apiName": "Payment Service",
+            "executionTimeInSec": 1.87,
+            "length": 342
+          },
+          "validations": [
+            {
+              "staticData": "",
+              "type": "API",
+              "field": "status",
+              "value": "expected_status_value",
+              "apiField": "response.data.status",
+              "apiValue": "completed",
+              "sourceValue": "",
+              "result": "Pass",
+              "parameters": "testCase=1|runId=25|service=Payment Service",
+              "serviceName": "Payment Service",
+              "header": "{\"X-Status-Code\": \"200\"}",
+              "body": "{\"status\": \"completed\"}",
+              "subHeader1": "Content-Type",
+              "subHeader2": "X-Response-Time"
+            },
+            {
+              "staticData": "",
+              "type": "API",
+              "field": "amount",
+              "value": "expected_amount_value",
+              "apiField": "response.data.amount",
+              "apiValue": "149.99",
+              "sourceValue": "",
+              "result": "Pass",
+              "parameters": "testCase=1|runId=25|service=Payment Service",
+              "serviceName": "Payment Service",
+              "header": "",
+              "body": "{\"amount\": \"149.99\"}",
+              "subHeader1": "Content-Type",
+              "subHeader2": "X-Response-Time"
+            }
+          ],
+          "status": "Pass"
+        },
+        {
+          "testCase": {
+            "idx": "2",
+            "testStepName": "Payment Service - GET Retrieve Payment (Negative Test) Test Case 2",
+            "method": "GET",
+            "webURL": "https://api.example.com/api/v1/payments/99999",
+            "headerSheet": "HeadersSheet",
+            "bodyText": "",
+            "validationSheet": "ValidationSheet",
+            "correlateSheet": "",
+            "negativeCase": "Yes",
+            "params": "id=99999&page=1&limit=10&sort=desc&filter=payment",
+            "comments": "Test case for Payment Service - GET operation. Validates error handling.",
+            "input1": ""
+          },
+          "output": {
+            "outputJson": "{\n  \"success\": false,\n  \"statusCode\": 404,\n  \"message\": \"Payment not found\",\n  \"data\": null\n}",
+            "apiName": "Payment Service",
+            "executionTimeInSec": 0.42,
+            "length": 98
+          },
+          "validations": [
+            {
+              "staticData": "",
+              "type": "API",
+              "field": "statusCode",
+              "value": "expected_statusCode_value",
+              "apiField": "response.statusCode",
+              "apiValue": "404",
+              "sourceValue": "",
+              "result": "Fail",
+              "parameters": "testCase=2|runId=25|service=Payment Service",
+              "serviceName": "Payment Service",
+              "header": "{\"X-Status-Code\": \"404\"}",
+              "body": "{\"statusCode\": \"404\"}",
+              "subHeader1": "Content-Type",
+              "subHeader2": "X-Response-Time"
+            }
+          ],
+          "status": "Fail"
+        }
+      ]
+    },
+    {
+      "adoRunId": "ADO-10024",
+      "suiteName": "User Service",
+      "totalTestCases": 22,
+      "passed": 21,
+      "failed": 1,
+      "startTime": "2024-01-14T14:20:00.000Z",
+      "endTime": "2024-01-14T14:24:18.000Z",
+      "executionDuration": "4m 18s",
+      "version": "v1.8.3",
+      "testCases": [
+        {
+          "testCase": {
+            "idx": "1",
+            "testStepName": "User Service - POST Create User Test Case 1",
+            "method": "POST",
+            "webURL": "https://api.example.com/api/v1/users/create",
+            "headerSheet": "HeadersSheet",
+            "bodyText": "{\n  \"userId\": 1001,\n  \"email\": \"john.doe@example.com\",\n  \"name\": \"John Doe\",\n  \"phoneNumber\": \"+1-555-0123\",\n  \"role\": \"customer\"\n}",
+            "validationSheet": "ValidationSheet",
+            "correlateSheet": "",
+            "negativeCase": "No",
+            "params": "version=v1&async=false",
+            "comments": "Test case for User Service - POST operation. Validates successful response.",
+            "input1": ""
+          },
+          "output": {
+            "outputJson": "{\n  \"success\": true,\n  \"statusCode\": 201,\n  \"message\": \"User created successfully\",\n  \"data\": {\n    \"id\": \"USER-00010001\",\n    \"userId\": 1001,\n    \"email\": \"john.doe@example.com\",\n    \"accountStatus\": \"active\",\n    \"createdAt\": \"2024-01-14T14:20:05.000Z\"\n  }\n}",
+            "apiName": "User Service",
+            "executionTimeInSec": 2.14,
+            "length": 287
+          },
+          "validations": [
+            {
+              "staticData": "",
+              "type": "API",
+              "field": "email",
+              "value": "expected_email_value",
+              "apiField": "response.data.email",
+              "apiValue": "john.doe@example.com",
+              "sourceValue": "",
+              "result": "Pass",
+              "parameters": "testCase=1|runId=24|service=User Service",
+              "serviceName": "User Service",
+              "header": "",
+              "body": "{\"email\": \"john.doe@example.com\"}",
+              "subHeader1": "Content-Type",
+              "subHeader2": "X-Response-Time"
+            },
+            {
+              "staticData": "",
+              "type": "DB",
+              "field": "userId",
+              "value": "db_userId",
+              "apiField": "",
+              "apiValue": "1001",
+              "sourceValue": "SELECT userId FROM users WHERE id=1",
+              "result": "Pass",
+              "parameters": "testCase=1|runId=24|service=User Service",
+              "serviceName": "User Service",
+              "header": "",
+              "body": "",
+              "subHeader1": "",
+              "subHeader2": ""
+            }
+          ],
+          "status": "Pass"
+        }
+      ]
+    },
+    {
+      "adoRunId": "ADO-10023",
+      "suiteName": "Order Service",
+      "totalTestCases": 18,
+      "passed": 17,
+      "failed": 1,
+      "startTime": "2024-01-13T10:15:00.000Z",
+      "endTime": "2024-01-13T10:19:45.000Z",
+      "executionDuration": "4m 45s",
+      "version": "v3.1.0",
+      "testCases": [
+        {
+          "testCase": {
+            "idx": "1",
+            "testStepName": "Order Service - POST Create Order Test Case 1",
+            "method": "POST",
+            "webURL": "https://api.example.com/api/v1/orders/create",
+            "headerSheet": "HeadersSheet",
+            "bodyText": "{\n  \"userId\": 1001,\n  \"orderId\": \"ORD-00010001\",\n  \"items\": [\n    {\"productId\": \"PROD-001\", \"quantity\": 2, \"price\": 29.99},\n    {\"productId\": \"PROD-002\", \"quantity\": 1, \"price\": 49.99}\n  ],\n  \"shippingAddress\": {\n    \"street\": \"123 Main St\",\n    \"city\": \"San Francisco\",\n    \"state\": \"CA\",\n    \"zipCode\": \"94102\",\n    \"country\": \"USA\"\n  }\n}",
+            "validationSheet": "ValidationSheet",
+            "correlateSheet": "CorrelationSheet",
+            "negativeCase": "No",
+            "params": "version=v1&async=false",
+            "comments": "Test case for Order Service - POST operation. Validates successful response.",
+            "input1": ""
+          },
+          "output": {
+            "outputJson": "{\n  \"success\": true,\n  \"statusCode\": 200,\n  \"message\": \"Order created successfully\",\n  \"data\": {\n    \"id\": \"ORDER-00010001\",\n    \"orderId\": \"ORD-00010001\",\n    \"orderStatus\": \"confirmed\",\n    \"totalAmount\": 109.97,\n    \"itemCount\": 3,\n    \"estimatedDelivery\": \"2024-01-20T10:15:00.000Z\"\n  }\n}",
+            "apiName": "Order Service",
+            "executionTimeInSec": 3.21,
+            "length": 398
+          },
+          "validations": [
+            {
+              "staticData": "",
+              "type": "API",
+              "field": "orderId",
+              "value": "expected_orderId_value",
+              "apiField": "response.data.orderId",
+              "apiValue": "ORD-00010001",
+              "sourceValue": "",
+              "result": "Pass",
+              "parameters": "testCase=1|runId=23|service=Order Service",
+              "serviceName": "Order Service",
+              "header": "",
+              "body": "{\"orderId\": \"ORD-00010001\"}",
+              "subHeader1": "Content-Type",
+              "subHeader2": "X-Response-Time"
+            },
+            {
+              "staticData": "",
+              "type": "REGEX",
+              "field": "orderId",
+              "value": "^[A-Z]{3}-[0-9]{8}$",
+              "apiField": "",
+              "apiValue": "ORD-00010001",
+              "sourceValue": "",
+              "result": "Pass",
+              "parameters": "testCase=1|runId=23|service=Order Service",
+              "serviceName": "Order Service",
+              "header": "",
+              "body": "",
+              "subHeader1": "",
+              "subHeader2": ""
+            }
+          ],
+          "status": "Pass"
+        }
+      ]
+    },
+    {
+      "adoRunId": "ADO-10022",
+      "suiteName": "Inventory Service",
+      "totalTestCases": 15,
+      "passed": 14,
+      "failed": 1,
+      "startTime": "2024-01-12T16:45:00.000Z",
+      "endTime": "2024-01-12T16:48:30.000Z",
+      "executionDuration": "3m 30s",
+      "version": "v2.0.5",
+      "testCases": [
+        {
+          "testCase": {
+            "idx": "1",
+            "testStepName": "Inventory Service - PUT Update Stock Test Case 1",
+            "method": "PUT",
+            "webURL": "https://api.example.com/api/v1/inventory/update",
+            "headerSheet": "HeadersSheet",
+            "bodyText": "{\n  \"userId\": 1001,\n  \"productId\": \"PROD-042\",\n  \"quantity\": 75,\n  \"warehouseId\": \"WH-3\"\n}",
+            "validationSheet": "ValidationSheet",
+            "correlateSheet": "",
+            "negativeCase": "No",
+            "params": "version=v1&async=false",
+            "comments": "Test case for Inventory Service - PUT operation. Validates successful response.",
+            "input1": ""
+          },
+          "output": {
+            "outputJson": "{\n  \"success\": true,\n  \"statusCode\": 200,\n  \"message\": \"Inventory updated successfully\",\n  \"data\": {\n    \"id\": \"INVENTORY-00010001\",\n    \"productId\": \"PROD-042\",\n    \"quantity\": 75,\n    \"warehouseId\": \"WH-3\",\n    \"lastUpdated\": \"2024-01-12T16:45:12.000Z\"\n  }\n}",
+            "apiName": "Inventory Service",
+            "executionTimeInSec": 1.56,
+            "length": 312
+          },
+          "validations": [
+            {
+              "staticData": "",
+              "type": "API",
+              "field": "quantity",
+              "value": "expected_quantity_value",
+              "apiField": "response.data.quantity",
+              "apiValue": "75",
+              "sourceValue": "",
+              "result": "Pass",
+              "parameters": "testCase=1|runId=22|service=Inventory Service",
+              "serviceName": "Inventory Service",
+              "header": "",
+              "body": "{\"quantity\": \"75\"}",
+              "subHeader1": "Content-Type",
+              "subHeader2": "X-Response-Time"
+            }
+          ],
+          "status": "Pass"
+        }
+      ]
+    },
+    {
+      "adoRunId": "ADO-10021",
+      "suiteName": "Auth Service",
+      "totalTestCases": 12,
+      "passed": 11,
+      "failed": 1,
+      "startTime": "2024-01-11T08:00:00.000Z",
+      "endTime": "2024-01-11T08:02:45.000Z",
+      "executionDuration": "2m 45s",
+      "version": "v1.5.2",
+      "testCases": [
+        {
+          "testCase": {
+            "idx": "1",
+            "testStepName": "Auth Service - POST Login Test Case 1",
+            "method": "POST",
+            "webURL": "https://api.example.com/api/v1/auth/login",
+            "headerSheet": "HeadersSheet",
+            "bodyText": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"SecurePass123!\"\n}",
+            "validationSheet": "ValidationSheet",
+            "correlateSheet": "",
+            "negativeCase": "No",
+            "params": "version=v1&async=false",
+            "comments": "Test case for Auth Service - POST operation. Validates successful response.",
+            "input1": ""
+          },
+          "output": {
+            "outputJson": "{\n  \"success\": true,\n  \"statusCode\": 200,\n  \"message\": \"Login successful\",\n  \"data\": {\n    \"id\": \"AUTH-00010001\",\n    \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c\",\n    \"refreshToken\": \"refresh_token_abc123\",\n    \"expiresIn\": 3600\n  }\n}",
+            "apiName": "Auth Service",
+            "executionTimeInSec": 0.98,
+            "length": 456
+          },
+          "validations": [
+            {
+              "staticData": "",
+              "type": "API",
+              "field": "token",
+              "value": "expected_token_value",
+              "apiField": "response.data.token",
+              "apiValue": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+              "sourceValue": "",
+              "result": "Pass",
+              "parameters": "testCase=1|runId=21|service=Auth Service",
+              "serviceName": "Auth Service",
+              "header": "",
+              "body": "{\"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...\"}",
+              "subHeader1": "Content-Type",
+              "subHeader2": "X-Response-Time"
+            },
+            {
+              "staticData": "",
+              "type": "SCHEMA",
+              "field": "expiresIn",
+              "value": "schema_valid",
+              "apiField": "",
+              "apiValue": "3600",
+              "sourceValue": "",
+              "result": "Pass",
+              "parameters": "testCase=1|runId=21|service=Auth Service",
+              "serviceName": "Auth Service",
+              "header": "",
+              "body": "",
+              "subHeader1": "",
+              "subHeader2": ""
+            }
+          ],
+          "status": "Pass"
+        }
+      ]
+    }
+  ]
+}

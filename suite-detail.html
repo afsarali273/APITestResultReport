@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Suite Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #06b6d4;
+            --primary-light: #22d3ee;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --warning-color: #f59e0b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0e1a 0%, #0f1419 100%);
+            color: #e5e7eb;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.08) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+        }
+
+        .breadcrumb-nav {
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(6, 182, 212, 0.15);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .breadcrumb-nav a {
+            color: var(--primary-light);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .breadcrumb-nav a:hover {
+            color: #fff;
+        }
+
+        .breadcrumb-nav span {
+            color: #6b7280;
+        }
+
+        .suite-header {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(20, 184, 166, 0.05) 100%);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .suite-header h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 0%, #67e8f9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .suite-header .meta {
+            color: #9ca3af;
+            font-size: 0.95rem;
+        }
+
+        .suite-header .meta strong {
+            color: #d1d5db;
+        }
+
+        .kpi-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(6, 182, 212, 0.15);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 48px rgba(6, 182, 212, 0.15);
+        }
+
+        .kpi-card .label {
+            color: #9ca3af;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .kpi-card .value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 0%, #67e8f9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .kpi-card.success .value {
+            background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .kpi-card.danger .value {
+            background: linear-gradient(135deg, #ef4444 0%, #f87171 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .kpi-card .subtext {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .table-container {
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(6, 182, 212, 0.15);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .table-container h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #f9fafb;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.625rem 1.25rem;
+            border-radius: 10px;
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            background: rgba(15, 23, 42, 0.6);
+            color: #d1d5db;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover {
+            background: rgba(6, 182, 212, 0.1);
+            border-color: rgba(6, 182, 212, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            border-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 16px rgba(6, 182, 212, 0.3);
+        }
+
+        .custom-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .custom-table thead th {
+            background: rgba(6, 182, 212, 0.05);
+            color: #9ca3af;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(6, 182, 212, 0.1);
+            white-space: nowrap;
+            text-align: left;
+        }
+
+        .custom-table tbody td {
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid rgba(6, 182, 212, 0.05);
+            color: #d1d5db;
+            font-size: 0.9rem;
+        }
+
+        .custom-table tbody tr {
+            transition: all 0.2s;
+        }
+
+        .custom-table tbody tr:hover {
+            background: rgba(6, 182, 212, 0.05);
+            transform: scale(1.005);
+        }
+
+        .custom-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge-status {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-passed {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.1);
+        }
+
+        .badge-failed {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.1);
+        }
+
+        .search-box {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 12px;
+            padding: 0.875rem 1.25rem;
+            color: #e5e7eb;
+            flex: 1;
+            max-width: 400px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1), 0 0 20px rgba(6, 182, 212, 0.2);
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        .search-box::placeholder {
+            color: #6b7280;
+        }
+
+        .detail-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            overflow-y: auto;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .detail-modal.show {
+            display: block;
+        }
+
+        .modal-content-custom {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 20px;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            animation: slideUp 0.3s;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header-custom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .modal-header-custom h2 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff 0%, #67e8f9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .close-btn {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+            background: rgba(239, 68, 68, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .tabs-custom {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid rgba(6, 182, 212, 0.1);
+        }
+
+        .tab-btn {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            color: #9ca3af;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .tab-btn:hover {
+            color: #d1d5db;
+            background: rgba(6, 182, 212, 0.05);
+        }
+
+        .tab-btn.active {
+            color: var(--primary-light);
+            border-bottom-color: var(--primary-color);
+            background: rgba(6, 182, 212, 0.1);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .detail-section {
+            background: rgba(6, 182, 212, 0.05);
+            border: 1px solid rgba(6, 182, 212, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-section h4 {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: #f9fafb;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .detail-row {
+            display: flex;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(6, 182, 212, 0.05);
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            flex: 0 0 150px;
+            color: #9ca3af;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .detail-value {
+            color: #d1d5db;
+            font-size: 0.875rem;
+            word-break: break-all;
+        }
+
+        .json-viewer {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            border-radius: 10px;
+            padding: 1.25rem;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #d1d5db;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
+        @media print {
+            body {
+                background-color: white;
+                color: black;
+            }
+            .kpi-card, .table-container, .suite-header {
+                background-color: white;
+                border-color: #ddd;
+            }
+            .detail-modal {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <!-- Breadcrumb -->
+        <div class="breadcrumb-nav">
+            <a href="dashboard.html">← Back to Dashboard</a>
+            <span>/</span>
+            <span id="breadcrumbRunId">Loading...</span>
+        </div>
+
+        <!-- Suite Header -->
+        <div class="suite-header" id="suiteHeader">
+            <h1>Loading...</h1>
+            <div class="meta">
+                <strong>Run ID:</strong> <span id="runId"></span> | 
+                <strong>Executed:</strong> <span id="executed"></span> | 
+                <strong>Duration:</strong> <span id="duration"></span>
+            </div>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="row mb-4" id="kpiCards">
+            <!-- KPI cards will be populated by JavaScript -->
+        </div>
+
+        <!-- Test Cases Table -->
+        <div class="table-container">
+            <h3>Test Cases</h3>
+            <div class="filter-bar">
+                <input type="text" class="search-box" placeholder="Search test cases...">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="GET">GET</button>
+                <button class="filter-btn" data-filter="POST">POST</button>
+                <button class="filter-btn" data-filter="PUT">PUT</button>
+                <button class="filter-btn" data-filter="DELETE">DELETE</button>
+                <button class="filter-btn" data-filter="passed">Passed Only</button>
+                <button class="filter-btn" data-filter="failed">Failed Only</button>
+            </div>
+            
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Test Case</th>
+                        <th>Method</th>
+                        <th>Endpoint</th>
+                        <th>Status</th>
+                        <th>Duration</th>
+                        <th>Validations</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="testCasesTable">
+                    <!-- Table rows will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div id="detailModal" class="detail-modal">
+        <div class="modal-content-custom">
+            <div class="modal-header-custom">
+                <h2>Test Case Details</h2>
+                <button class="close-btn" onclick="closeDetails()">&times;</button>
+            </div>
+
+            <div class="tabs-custom">
+                <button class="tab-btn active" onclick="switchTab('request')">Request</button>
+                <button class="tab-btn" onclick="switchTab('response')">Response</button>
+                <button class="tab-btn" onclick="switchTab('validations')">Validations</button>
+            </div>
+
+            <!-- Request Tab -->
+            <div id="requestTab" class="tab-content active">
+                <div class="detail-section">
+                    <h4>Request Details</h4>
+                    <div class="detail-row">
+                        <div class="detail-label">Method:</div>
+                        <div class="detail-value">POST</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">URL:</div>
+                        <div class="detail-value">https://api.example.com/api/v1/orders</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Content-Type:</div>
+                        <div class="detail-value">application/json</div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h4>Request Body</h4>
+                    <div class="json-viewer">{
+  "customerId": "CUST-12345",
+  "items": [
+    {
+      "productId": "PROD-001",
+      "quantity": 2,
+      "price": 29.99
+    }
+  ],
+  "shippingAddress": {
+    "street": "123 Main St",
+    "city": "New York",
+    "state": "NY",
+    "zipCode": "10001"
+  },
+  "paymentMethod": "credit_card"
+}</div>
+                </div>
+            </div>
+
+            <!-- Response Tab -->
+            <div id="responseTab" class="tab-content">
+                <div class="detail-section">
+                    <h4>Response Details</h4>
+                    <div class="detail-row">
+                        <div class="detail-label">Status Code:</div>
+                        <div class="detail-value">201 Created</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Execution Time:</div>
+                        <div class="detail-value">1.2s</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Response Size:</div>
+                        <div class="detail-value">1.8 KB</div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h4>Response Body</h4>
+                    <div class="json-viewer">{
+  "orderId": "ORD-789012",
+  "customerId": "CUST-12345",
+  "status": "PENDING",
+  "totalAmount": 59.98,
+  "createdAt": "2025-01-08T14:23:45Z",
+  "items": [
+    {
+      "productId": "PROD-001",
+      "quantity": 2,
+      "unitPrice": 29.99,
+      "subtotal": 59.98
+    }
+  ]
+}</div>
+                </div>
+            </div>
+
+            <!-- Validations Tab -->
+            <div id="validationsTab" class="tab-content">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Field</th>
+                            <th>Expected</th>
+                            <th>Actual</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>API</td>
+                            <td>response.statusCode</td>
+                            <td>201</td>
+                            <td>201</td>
+                            <td><span class="badge-status badge-passed">Passed</span></td>
+                        </tr>
+                        <tr>
+                            <td>SCHEMA</td>
+                            <td>response.body.orderId</td>
+                            <td>String (not null)</td>
+                            <td>ORD-789012</td>
+                            <td><span class="badge-status badge-passed">Passed</span></td>
+                        </tr>
+                        <tr>
+                            <td>API</td>
+                            <td>response.body.totalAmount</td>
+                            <td>59.98</td>
+                            <td>59.98</td>
+                            <td><span class="badge-status badge-passed">Passed</span></td>
+                        </tr>
+                        <tr>
+                            <td>REGEX</td>
+                            <td>response.body.orderId</td>
+                            <td>^ORD-\d{6}$</td>
+                            <td>ORD-789012</td>
+                            <td><span class="badge-status badge-passed">Passed</span></td>
+                        </tr>
+                        <tr>
+                            <td>DB</td>
+                            <td>orders.status</td>
+                            <td>PENDING</td>
+                            <td>PENDING</td>
+                            <td><span class="badge-status badge-passed">Passed</span></td>
+                        </tr>
+                        <tr>
+                            <td>API</td>
+                            <td>response.body.items.length</td>
+                            <td>1</td>
+                            <td>1</td>
+                            <td><span class="badge-status badge-passed">Passed</span></td>
+                        </tr>
+                        <tr>
+                            <td>STATIC</td>
+                            <td>response.body.status</td>
+                            <td>PENDING</td>
+                            <td>PENDING</td>
+                            <td><span class="badge-status badge-passed">Passed</span></td>
+                        </tr>
+                        <tr>
+                            <td>SCHEMA</td>
+                            <td>response.body.createdAt</td>
+                            <td>ISO 8601 DateTime</td>
+                            <td>2025-01-08T14:23:45Z</td>
+                            <td><span class="badge-status badge-passed">Passed</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentSuite = null;
+        let currentTestCase = null;
+
+        // Get runId from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const runId = urlParams.get('runId') || 'ADO-10025';
+
+        // Load JSON data
+        fetch('mock-data.json')
+            .then(response => response.json())
+            .then(data => {
+                currentSuite = data.suites.find(s => s.adoRunId === runId);
+                if (currentSuite) {
+                    populateSuiteDetails();
+                }
+            })
+            .catch(error => console.error('Error loading data:', error));
+
+        function getMethodBadgeStyle(method) {
+            const styles = {
+                'GET': 'background: rgba(16, 185, 129, 0.15); color: #10b981; border: 1px solid rgba(16, 185, 129, 0.3);',
+                'POST': 'background: rgba(59, 130, 246, 0.15); color: #3b82f6; border: 1px solid rgba(59, 130, 246, 0.3);',
+                'PUT': 'background: rgba(245, 158, 11, 0.15); color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.3);',
+                'DELETE': 'background: rgba(239, 68, 68, 0.15); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3);',
+                'PATCH': 'background: rgba(168, 85, 247, 0.15); color: #a855f7; border: 1px solid rgba(168, 85, 247, 0.3);'
+            };
+            return styles[method] || styles['GET'];
+        }
+
+        function populateSuiteDetails() {
+            // Update breadcrumb and header
+            document.getElementById('breadcrumbRunId').textContent = currentSuite.adoRunId;
+            document.querySelector('.suite-header h1').textContent = currentSuite.suiteName;
+            document.getElementById('runId').textContent = currentSuite.adoRunId;
+            document.getElementById('executed').textContent = new Date(currentSuite.startTime).toLocaleString();
+            document.getElementById('duration').textContent = currentSuite.executionDuration;
+            document.title = `Test Suite Details - ${currentSuite.adoRunId}`;
+
+            // Calculate KPIs
+            const passRate = ((currentSuite.passed / currentSuite.totalTestCases) * 100).toFixed(1);
+            const failRate = ((currentSuite.failed / currentSuite.totalTestCases) * 100).toFixed(1);
+            const avgDuration = (currentSuite.testCases.reduce((sum, tc) => sum + tc.output.executionTimeInSec, 0) / currentSuite.testCases.length).toFixed(1);
+
+            // Populate KPI cards
+            document.getElementById('kpiCards').innerHTML = `
+                <div class="col-md-3">
+                    <div class="kpi-card">
+                        <div class="label">Total Tests</div>
+                        <div class="value">${currentSuite.totalTestCases}</div>
+                        <div class="subtext">Test cases executed</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="kpi-card success">
+                        <div class="label">Passed</div>
+                        <div class="value">${currentSuite.passed}</div>
+                        <div class="subtext">${passRate}% success rate</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="kpi-card danger">
+                        <div class="label">Failed</div>
+                        <div class="value">${currentSuite.failed}</div>
+                        <div class="subtext">${failRate}% failure rate</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="kpi-card">
+                        <div class="label">Avg Duration</div>
+                        <div class="value">${avgDuration}s</div>
+                        <div class="subtext">Per test case</div>
+                    </div>
+                </div>
+            `;
+
+            // Populate test cases table
+            const tbody = document.getElementById('testCasesTable');
+            tbody.innerHTML = currentSuite.testCases.map((tc, idx) => {
+                const statusClass = tc.status === 'Pass' ? 'badge-passed' : 'badge-failed';
+                const statusLower = tc.status.toLowerCase() === 'pass' ? 'passed' : 'failed';
+                const passedValidations = tc.validations.filter(v => v.result === 'Pass').length;
+                const totalValidations = tc.validations.length;
+                
+                return `
+                    <tr data-method="${tc.testCase.method}" data-status="${statusLower}">
+                        <td><strong>${tc.testCase.testStepName}</strong></td>
+                        <td><span class="badge-status" style="${getMethodBadgeStyle(tc.testCase.method)}">${tc.testCase.method}</span></td>
+                        <td>${tc.testCase.webURL}</td>
+                        <td><span class="badge-status ${statusClass}">${tc.status}</span></td>
+                        <td>${tc.output.executionTimeInSec.toFixed(1)}s</td>
+                        <td>${passedValidations} / ${totalValidations}</td>
+                        <td><button class="link-button" onclick="showDetails(${idx})">View Details</button></td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Search functionality
+        document.querySelector('.search-box').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('.custom-table tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+
+        // Filter functionality
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.dataset.filter;
+                const rows = document.querySelectorAll('.custom-table tbody tr');
+                
+                rows.forEach(row => {
+                    if (filter === 'all') {
+                        row.style.display = '';
+                    } else if (filter === 'passed' || filter === 'failed') {
+                        row.style.display = row.dataset.status === filter ? '' : 'none';
+                    } else {
+                        row.style.display = row.dataset.method === filter ? '' : 'none';
+                    }
+                });
+            });
+        });
+
+        // Modal functions
+        function showDetails(testIdx) {
+            currentTestCase = currentSuite.testCases[testIdx];
+            
+            // Update request tab
+            const requestBody = currentTestCase.testCase.bodyText || 'No request body';
+            document.getElementById('requestTab').innerHTML = `
+                <div class="detail-section">
+                    <h4>Request Details</h4>
+                    <div class="detail-row">
+                        <div class="detail-label">Method:</div>
+                        <div class="detail-value">${currentTestCase.testCase.method}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">URL:</div>
+                        <div class="detail-value">${currentTestCase.testCase.webURL}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Params:</div>
+                        <div class="detail-value">${currentTestCase.testCase.params || 'None'}</div>
+                    </div>
+                </div>
+                ${requestBody !== 'No request body' ? `
+                <div class="detail-section">
+                    <h4>Request Body</h4>
+                    <div class="json-viewer">${requestBody}</div>
+                </div>` : ''}
+            `;
+            
+            // Update response tab
+            document.getElementById('responseTab').innerHTML = `
+                <div class="detail-section">
+                    <h4>Response Details</h4>
+                    <div class="detail-row">
+                        <div class="detail-label">API Name:</div>
+                        <div class="detail-value">${currentTestCase.output.apiName}</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Execution Time:</div>
+                        <div class="detail-value">${currentTestCase.output.executionTimeInSec.toFixed(2)}s</div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Response Size:</div>
+                        <div class="detail-value">${(currentTestCase.output.length / 1024).toFixed(2)} KB</div>
+                    </div>
+                </div>
+                <div class="detail-section">
+                    <h4>Response Body</h4>
+                    <div class="json-viewer">${currentTestCase.output.outputJson}</div>
+                </div>
+            `;
+            
+            // Update validations tab
+            const validationsHtml = currentTestCase.validations.map(v => {
+                const statusClass = v.result === 'Pass' ? 'badge-passed' : 'badge-failed';
+                return `
+                    <tr>
+                        <td>${v.type}</td>
+                        <td>${v.field}</td>
+                        <td>${v.value}</td>
+                        <td>${v.apiValue}</td>
+                        <td><span class="badge-status ${statusClass}">${v.result}</span></td>
+                    </tr>
+                `;
+            }).join('');
+            
+            document.querySelector('#validationsTab tbody').innerHTML = validationsHtml;
+            
+            document.getElementById('detailModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeDetails() {
+            document.getElementById('detailModal').classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            event.target.classList.add('active');
+            document.getElementById(tabName + 'Tab').classList.add('active');
+        }
+
+        // Close modal on outside click
+        document.getElementById('detailModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDetails();
+            }
+        });
+    </script>
+</body>
+</html>
